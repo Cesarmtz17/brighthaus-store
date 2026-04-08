@@ -18,9 +18,18 @@
 //   - 6-pack warm: VID 1647139082495070208 ($5.91)
 //   - 6-pack white: VID 1647139082549596160 ($5.91)
 //
-// - Garage Light: PENDIENTE (buscar en cjdropshipping.com "deformable garage light E26")
-// - Under Cabinet: PENDIENTE (buscar "under cabinet LED rechargeable motion sensor")
-// - Outdoor Flood: PENDIENTE (buscar "outdoor security flood light 3 head motion")
+// - Garage Light: PID 3A9D8DCD-3387-402B-A060-E47E7314106E (SKU CJJZSNSN00592)
+//   - Black 60W: VID 1372897261457117184 ($6.80)
+//   - Black 60W 2pcs: VID 1376005705953316864 ($13.60)
+//   - Black 60W 3pcs: VID 1376005705999454208 ($20.40)
+//
+// - Under Cabinet: PID 1605485818939330560 (SKU CJSN1644366)
+//   - 1pc Trichromatic: VID 1605485818972884992 ($5.98)
+//   - 2pcs Trichromatic: VID 1605485818972884993 ($7.55)
+//
+// - Outdoor Solar 118 LED: PID 10D0F2B4-5846-4D55-9936-3C90147C1559 (SKU CJJZHWTY00086)
+//   - 1pc 118 LED Cold White: VID 1E8173F8-76BB-4188-B91D-11098453E7AC ($8.33)
+//   - 2pc 118 LED Cold White: VID F9268562-7589-467B-8250-46EF2AAD888A ($15.66)
 //
 // Cuando tengas los PIDs, agrégalos aquí y en las env vars.
 // ============================================
@@ -69,10 +78,10 @@ async function cjRequest(endpoint, method = 'GET', body = null) {
 const PRODUCT_MAP = {
     'motion-sensor-3': { vid: '1602170190714908672', qty: 1 }, // 3pcs white light
     'motion-sensor-6': { vid: '1647139082549596160', qty: 1 }, // 6pcs white light
-    'garage-80w': { vid: process.env.CJ_VID_GARAGE_80W || '', qty: 1 },
-    'garage-150w-2pack': { vid: process.env.CJ_VID_GARAGE_150W || '', qty: 1 },
-    'cabinet-2pack': { vid: process.env.CJ_VID_CABINET || '', qty: 1 },
-    'outdoor-flood-2pack': { vid: process.env.CJ_VID_OUTDOOR || '', qty: 1 },
+    'garage-80w': { vid: process.env.CJ_VID_GARAGE_80W || '1372897261457117184', qty: 1 },
+    'garage-150w-2pack': { vid: process.env.CJ_VID_GARAGE_150W || '1376005705953316864', qty: 1 },
+    'cabinet-2pack': { vid: process.env.CJ_VID_CABINET || '1605485818972884993', qty: 1 },
+    'outdoor-flood-2pack': { vid: process.env.CJ_VID_OUTDOOR || 'F9268562-7589-467B-8250-46EF2AAD888A', qty: 1 },
     // Bundles — need to order each component separately
     'bundle-starter': null, // handled as multiple items
     'bundle-complete': null
