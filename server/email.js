@@ -152,4 +152,65 @@ async function sendShippingNotification(order) {
     }
 }
 
-module.exports = { sendOrderConfirmation, sendShippingNotification };
+// Notify admin (you) about new order so you can fulfill it on CJ
+async function sendAdminNotification(order) {
+    try {
+        const t = initTransporter();
+        const items = JSON.parse(order.items);
+
+        const itemList = items.map(i => `- ${i.qty}x ${i.name} ($${(i.price * i.qty).toFixed(2)})`).join('\n');
+
+        const html = `
+        <div style="max-width: 600px; margin: 0 auto; font-family: 'Helvetica Neue', Arial, sans-serif; color: #2C2C2C;">
+            <div style="background: #B8956A; padding: 24px; text-align: center;">
+                <h1 style="color: white; font-size: 22px; margin: 0;">NEW ORDER - Action Required</h1>
+            </div>
+            <div style="padding: 32px; background: #FAF7F2;">
+                <h2 style="font-size: 20px; margin-bottom: 16px;">Order #${order.order_number}</h2>
+                <p style="font-size: 14px; color: #6B6B6B;">Total: <strong style="color:#2C2C2C;">$${order.total.toFixed(2)}</strong></p>
+
+                <div style="background: white; border: 1px solid #E5E0D8; border-radius: 8px; padding: 20px; margin: 16px 0;">
+                    <h3 style="font-size: 14px; color: #6B6B6B; margin-bottom: 12px;">ITEMS TO ORDER ON CJ:</h3>
+                    <pre style="font-size: 14px; margin: 0; white-space: pre-wrap;">${itemList}</pre>
+                </div>
+
+                <div style="background: white; border: 1px solid #E5E0D8; border-radius: 8px; padding: 20px; margin: 16px 0;">
+                    <h3 style="font-size: 14px; color: #6B6B6B; margin-bottom: 12px;">SHIP TO:</h3>
+                    <p style="margin: 0; line-height: 1.8; font-size: 14px;">
+                        <strong>${order.shipping_name}</strong><br>
+                        ${order.shipping_address_line1}<br>
+                        ${order.shipping_address_line2 ? order.shipping_address_line2 + '<br>' : ''}
+                        ${order.shipping_city}, ${order.shipping_state} ${order.shipping_zip}<br>
+                        ${order.shipping_country}
+                    </p>
+                </div>
+
+                <div style="background: white; border: 1px solid #E5E0D8; border-radius: 8px; padding: 20px; margin: 16px 0;">
+                    <h3 style="font-size: 14px; color: #6B6B6B; margin-bottom: 12px;">CUSTOMER:</h3>
+                    <p style="margin: 0; font-size: 14px;">
+                        ${order.customer_name} — ${order.customer_email}
+                    </p>
+                </div>
+
+                <p style="font-size: 13px; color: #9A9A9A; margin-top: 20px;">
+                    1. Go to CJ Dropshipping and place this order<br>
+                    2. Update tracking at: <a href="${process.env.FRONTEND_URL}/admin">Admin Panel</a>
+                </p>
+            </div>
+        </div>
+        `;
+
+        await t.sendMail({
+            from: process.env.EMAIL_FROM,
+            to: process.env.SMTP_USER, // Send to yourself
+            subject: `[BrightHaus] NEW ORDER #${order.order_number} - $${order.total.toFixed(2)}`,
+            html
+        });
+
+        console.log(`Admin notification sent for order ${order.order_number}`);
+    } catch (err) {
+        console.error('Admin notification failed:', err.message);
+    }
+}
+
+module.exports = { sendOrderConfirmation, sendShippingNotification, sendAdminNotification };

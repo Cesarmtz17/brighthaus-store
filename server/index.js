@@ -11,7 +11,8 @@ const path = require('path');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { initDatabase, getDb } = require('./database');
 const { calculateShipping, getAvailableMethods } = require('./shipping');
-const { sendOrderConfirmation, sendShippingNotification } = require('./email');
+const { sendOrderConfirmation, sendShippingNotification, sendAdminNotification } = require('./email');
+const { createCJOrder, canAutoOrder } = require('./cj');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -221,8 +222,19 @@ async function createOrderFromSession(session) {
     `).run(orderData);
 
     await sendOrderConfirmation(orderData);
-    console.log(`Order created: ${orderNumber}`);
+    await sendAdminNotification(orderData);
 
+    // Try auto-order on CJ if all products are mapped
+    if (canAutoOrder(orderData.items)) {
+        const cjResult = await createCJOrder(orderData);
+        if (cjResult) {
+            console.log(`CJ auto-order placed for ${orderNumber}`);
+        }
+    } else {
+        console.log(`Order ${orderNumber}: Manual CJ fulfillment needed`);
+    }
+
+    console.log(`Order created: ${orderNumber}`);
     return orderData;
 }
 
