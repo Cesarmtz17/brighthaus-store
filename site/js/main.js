@@ -7,14 +7,14 @@ let cart = JSON.parse(localStorage.getItem('brighthaus_cart') || '[]');
 let selectedShipping = 'standard';
 
 const productIcons = {
-    'motion-sensor-3': '💡',
-    'motion-sensor-6': '💡',
-    'garage-80w': '🔆',
-    'garage-150w-2pack': '🔆',
-    'cabinet-2pack': '✨',
-    'outdoor-flood-2pack': '🌙',
-    'bundle-starter': '📦',
-    'bundle-complete': '📦'
+    'motion-sensor-3': 'MS',
+    'motion-sensor-6': 'MS',
+    'garage-80w': 'GL',
+    'garage-150w-2pack': 'GL',
+    'cabinet-2pack': 'UC',
+    'outdoor-flood-2pack': 'FL',
+    'bundle-starter': 'BN',
+    'bundle-complete': 'BN'
 };
 
 // ---- DOM Elements ----
@@ -50,7 +50,7 @@ function updateCartUI() {
     const shippingLabel = freeShipping ? 'FREE' : 'Calculated at checkout';
 
     cartItems.innerHTML = cart.map((item, index) => {
-        const icon = productIcons[item.id] || '💡';
+        const icon = productIcons[item.id] || 'BH';
         return `
             <div class="cart-item">
                 <div class="cart-item-icon">${icon}</div>

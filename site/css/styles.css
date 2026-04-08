@@ -350,6 +350,19 @@ body {
     display: block;
 }
 
+.showcase-svg,
+.collection-svg,
+.feature-svg,
+.trust-svg {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.collection-svg,
+.feature-svg {
+    margin-bottom: 16px;
+}
+
 .showcase-card span:last-child {
     font-size: 13px;
     color: var(--text-secondary);
@@ -882,7 +895,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.5px;
     flex-shrink: 0;
 }
 
