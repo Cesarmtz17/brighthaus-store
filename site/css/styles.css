@@ -350,17 +350,24 @@ body {
     display: block;
 }
 
-.showcase-svg,
-.collection-svg,
-.feature-svg,
-.trust-svg {
+.showcase-svg {
     display: block;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
 }
 
-.collection-svg,
+.collection-svg {
+    display: block;
+    margin: 0 auto 16px;
+}
+
 .feature-svg {
+    display: block;
     margin-bottom: 16px;
+}
+
+.trust-svg {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .showcase-card span:last-child {
