@@ -359,7 +359,7 @@ app.get('/api/admin/stats', adminAuth, (req, res) => {
 });
 
 // ---- Catch-all: serve index.html ----
-app.get('/{*path}', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'site', 'index.html'));
 });
 
