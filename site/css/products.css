@@ -90,6 +90,17 @@
     color: #fff;
 }
 
+.product-card-link,
+.product-title-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-title-link:hover .product-title {
+    color: var(--primary);
+}
+
 .product-image {
     aspect-ratio: 4/3;
     overflow: hidden;
@@ -98,6 +109,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    cursor: pointer;
 }
 
 .product-image img {

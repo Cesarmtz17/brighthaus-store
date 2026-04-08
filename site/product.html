@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product — BrightHaus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/products.css">
+    <link rel="stylesheet" href="/css/product-detail.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <p>FREE shipping on orders over $49 | 30-Day Money Back Guarantee</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <span class="logo-text">Bright<span class="logo-accent">Haus</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/#products">Shop</a></li>
+                <li><a href="/#collections">Collections</a></li>
+                <li><a href="/#why-us">Why BrightHaus</a></li>
+                <li><a href="/#reviews">Reviews</a></li>
+                <li><a href="/#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="cart-btn" id="cartBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail -->
+    <section class="product-detail" id="productDetail">
+        <div class="container">
+            <div class="breadcrumb" id="breadcrumb"></div>
+
+            <div class="product-detail-grid">
+                <!-- Gallery -->
+                <div class="product-gallery" id="productGallery">
+                    <img class="main-image" src="" alt="">
+                </div>
+
+                <!-- Info -->
+                <div class="product-detail-info">
+                    <div class="product-badge" id="productBadge"></div>
+                    <h1 class="product-title" id="productTitle"></h1>
+                    <div class="product-rating" id="productRating"></div>
+                    <div class="product-pricing" id="productPricing"></div>
+                    <p class="product-desc" id="productDesc"></p>
+                    <ul class="product-features" id="productFeatures"></ul>
+
+                    <div class="quantity-row">
+                        <div class="quantity-selector">
+                            <button type="button" onclick="changeQty(-1)">-</button>
+                            <input type="number" class="qty-value" id="qtyValue" value="1" min="1" max="10">
+                            <button type="button" onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-add-cart" id="addToCartBtn">Add to Cart</button>
+
+                    <div class="trust-row">
+                        <div class="trust-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            Fast US Shipping
+                        </div>
+                        <div class="trust-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                            30-Day Returns
+                        </div>
+                        <div class="trust-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            1-Year Warranty
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div class="product-specs">
+                <h2>Specifications</h2>
+                <table class="specs-table">
+                    <tbody id="specsTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products">
+                <h2>You May Also Like</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <span class="logo-text">Bright<span class="logo-accent">Haus</span></span>
+                    </a>
+                    <p>Premium LED lighting solutions for every space in your home. Easy install, energy efficient, built to last.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="/#products">All Products</a></li>
+                        <li><a href="/#products">Indoor Lighting</a></li>
+                        <li><a href="/#products">Garage Lighting</a></li>
+                        <li><a href="/#products">Outdoor Lighting</a></li>
+                        <li><a href="/#products">Bundles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/#faq">FAQ</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BrightHaus. All rights reserved.</p>
+                <div class="payment-icons">
+                    <span>Visa</span>
+                    <span>Mastercard</span>
+                    <span>Amex</span>
+                    <span>PayPal</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" id="cartClose">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="cart-empty">Your cart is empty</p>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn btn-primary btn-block" id="checkoutBtn" onclick="handleCheckout()">Checkout</button>
+            <p class="cart-note">Free shipping on orders over $49</p>
+        </div>
+    </div>
+
+    <script src="/js/products-data.js"></script>
+    <script src="/js/product-page.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

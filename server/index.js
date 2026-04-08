@@ -370,6 +370,11 @@ app.get('/api/admin/stats', adminAuth, (req, res) => {
     res.json(stats);
 });
 
+// ---- Product detail pages ----
+app.get('/product/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'site', 'product.html'));
+});
+
 // ---- Catch-all: serve index.html ----
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'site', 'index.html'));

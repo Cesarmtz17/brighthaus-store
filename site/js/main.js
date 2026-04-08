@@ -165,67 +165,71 @@ document.querySelectorAll('.btn-add-cart').forEach(btn => {
     });
 });
 
-// ---- Product Filters ----
+// ---- Product Filters (index page only) ----
 const filterBtns = document.querySelectorAll('.filter-btn');
 const productCards = document.querySelectorAll('.product-card');
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const filter = btn.dataset.filter;
+if (filterBtns.length) {
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter;
 
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-        productCards.forEach(card => {
-            const category = card.dataset.category;
-            if (filter === 'all' || category === filter) {
-                card.classList.remove('hidden');
-                card.classList.add('fade-in');
-            } else {
-                card.classList.add('hidden');
-                card.classList.remove('fade-in');
+            productCards.forEach(card => {
+                const category = card.dataset.category;
+                if (filter === 'all' || category === filter) {
+                    card.classList.remove('hidden');
+                    card.classList.add('fade-in');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('fade-in');
+                }
+            });
+        });
+    });
+
+    // Collection cards filter integration
+    document.querySelectorAll('.collection-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const filter = card.dataset.filter;
+            if (filter) {
+                filterBtns.forEach(b => {
+                    b.classList.toggle('active', b.dataset.filter === filter);
+                });
+                productCards.forEach(pc => {
+                    const category = pc.dataset.category;
+                    if (filter === 'all' || category === filter) {
+                        pc.classList.remove('hidden');
+                        pc.classList.add('fade-in');
+                    } else {
+                        pc.classList.add('hidden');
+                        pc.classList.remove('fade-in');
+                    }
+                });
             }
         });
     });
-});
+}
 
-// Collection cards filter integration
-document.querySelectorAll('.collection-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-        const filter = card.dataset.filter;
-        if (filter) {
-            filterBtns.forEach(b => {
-                b.classList.toggle('active', b.dataset.filter === filter);
-            });
-            productCards.forEach(pc => {
-                const category = pc.dataset.category;
-                if (filter === 'all' || category === filter) {
-                    pc.classList.remove('hidden');
-                    pc.classList.add('fade-in');
-                } else {
-                    pc.classList.add('hidden');
-                    pc.classList.remove('fade-in');
-                }
-            });
-        }
+// ---- FAQ Accordion (index page only) ----
+if (document.querySelector('.faq-question')) {
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const wasActive = item.classList.contains('active');
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+
+            // Toggle clicked
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        });
     });
-});
-
-// ---- FAQ Accordion ----
-document.querySelectorAll('.faq-question').forEach(question => {
-    question.addEventListener('click', () => {
-        const item = question.parentElement;
-        const wasActive = item.classList.contains('active');
-
-        // Close all
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-
-        // Toggle clicked
-        if (!wasActive) {
-            item.classList.add('active');
-        }
-    });
-});
+}
 
 // ---- Mobile Menu ----
 mobileMenuBtn.addEventListener('click', () => {
@@ -253,8 +257,9 @@ navLinks.querySelectorAll('a').forEach(link => {
     });
 });
 
-// ---- Newsletter Form ----
-document.getElementById('newsletterForm').addEventListener('submit', async (e) => {
+// ---- Newsletter Form (index page only) ----
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) newsletterForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const input = e.target.querySelector('input');
     const email = input.value;
