@@ -20,7 +20,9 @@ function saveDb() {
 setInterval(saveDb, 30000);
 
 async function initDatabase() {
-    const SQL = await initSqlJs();
+    const SQL = await initSqlJs({
+        locateFile: file => path.join(__dirname, 'node_modules', 'sql.js', 'dist', file)
+    });
 
     if (fs.existsSync(DB_PATH)) {
         const fileBuffer = fs.readFileSync(DB_PATH);
