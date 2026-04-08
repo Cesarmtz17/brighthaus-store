@@ -8,12 +8,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-const stripeKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeKey) {
-    console.error('STRIPE_SECRET_KEY not found in environment variables');
-    console.error('Available env vars:', Object.keys(process.env).filter(k => k.startsWith('STRIPE') || k.startsWith('PORT')));
-}
-const stripe = require('stripe')(stripeKey || 'sk_test_placeholder');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { initDatabase, getDb } = require('./database');
 const { calculateShipping, getAvailableMethods } = require('./shipping');
 const { sendOrderConfirmation, sendShippingNotification } = require('./email');
