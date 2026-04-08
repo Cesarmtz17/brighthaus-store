@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const db = require('./database');
+const { initDatabase, getDb } = require('./database');
 const { calculateShipping, getAvailableMethods } = require('./shipping');
 const { sendOrderConfirmation, sendShippingNotification } = require('./email');
 
@@ -41,6 +41,7 @@ function generateOrderNumber() {
 
 // ---- API: Get Products ----
 app.get('/api/products', (req, res) => {
+    const db = getDb();
     const products = db.prepare('SELECT * FROM products WHERE active = 1').all();
     products.forEach(p => { p.features = JSON.parse(p.features); });
     res.json(products);
@@ -55,16 +56,15 @@ app.post('/api/shipping', (req, res) => {
 
 // ---- API: Calculate Shipping Cost ----
 app.post('/api/shipping/calculate', (req, res) => {
+    const db = getDb();
     const { items, method, subtotal } = req.body;
 
     if (!items || !method) {
         return res.status(400).json({ error: 'Missing items or method' });
     }
 
-    // Get product weights from DB
-    const getProduct = db.prepare('SELECT * FROM products WHERE id = ?');
     const enrichedItems = items.map(item => {
-        const product = getProduct.get(item.id);
+        const product = db.prepare('SELECT * FROM products WHERE id = ?').get(item.id);
         if (!product) return null;
         return { ...item, weight_oz: product.weight_oz, price: product.price };
     }).filter(Boolean);
@@ -76,20 +76,19 @@ app.post('/api/shipping/calculate', (req, res) => {
 // ---- API: Create Checkout Session ----
 app.post('/api/checkout', async (req, res) => {
     try {
+        const db = getDb();
         const { items, shipping_method } = req.body;
 
         if (!items || items.length === 0) {
             return res.status(400).json({ error: 'Cart is empty' });
         }
 
-        // Validate items and get prices from DB (never trust client prices)
-        const getProduct = db.prepare('SELECT * FROM products WHERE id = ? AND active = 1');
         const lineItems = [];
         let subtotal = 0;
         const validatedItems = [];
 
         for (const item of items) {
-            const product = getProduct.get(item.id);
+            const product = db.prepare('SELECT * FROM products WHERE id = ? AND active = 1').get(item.id);
             if (!product) {
                 return res.status(400).json({ error: `Product not found: ${item.id}` });
             }
@@ -115,34 +114,26 @@ app.post('/api/checkout', async (req, res) => {
             });
         }
 
-        // Calculate shipping
         const method = shipping_method || 'standard';
         const shippingResult = calculateShipping(validatedItems, method, subtotal);
         const shippingCost = shippingResult.cost || 0;
 
-        // Add shipping as line item if not free
         if (shippingCost > 0) {
             lineItems.push({
                 price_data: {
                     currency: 'usd',
-                    product_data: {
-                        name: `Shipping (${shippingResult.method.name})`
-                    },
+                    product_data: { name: `Shipping (${shippingResult.method.name})` },
                     unit_amount: Math.round(shippingCost * 100)
                 },
                 quantity: 1
             });
         }
 
-        // Create Stripe Checkout Session
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            shipping_address_collection: {
-                allowed_countries: ['US']
-            },
-            customer_email: undefined, // Let customer enter it
+            shipping_address_collection: { allowed_countries: ['US'] },
             metadata: {
                 items: JSON.stringify(validatedItems),
                 shipping_method: method,
@@ -185,6 +176,7 @@ async function handleWebhook(req, res) {
 
 // ---- Helper: Create order from Stripe session ----
 async function createOrderFromSession(session) {
+    const db = getDb();
     const existing = db.prepare('SELECT * FROM orders WHERE stripe_session_id = ?').get(session.id);
     if (existing) return existing;
 
@@ -215,7 +207,7 @@ async function createOrderFromSession(session) {
         items: meta.items || '[]'
     };
 
-    const insert = db.prepare(`
+    db.prepare(`
         INSERT INTO orders (order_number, stripe_session_id, stripe_payment_intent, status,
             customer_email, customer_name, customer_phone,
             shipping_name, shipping_address_line1, shipping_address_line2,
@@ -226,8 +218,7 @@ async function createOrderFromSession(session) {
             @shipping_name, @shipping_address_line1, @shipping_address_line2,
             @shipping_city, @shipping_state, @shipping_zip, @shipping_country,
             @shipping_method, @shipping_cost, @subtotal, @total, @items)
-    `);
-    insert.run(orderData);
+    `).run(orderData);
 
     await sendOrderConfirmation(orderData);
     console.log(`Order created: ${orderNumber}`);
@@ -238,11 +229,10 @@ async function createOrderFromSession(session) {
 // ---- API: Order Status (for success page) ----
 app.get('/api/order/:sessionId', async (req, res) => {
     try {
-        // Check if order already exists
+        const db = getDb();
         let order = db.prepare('SELECT * FROM orders WHERE stripe_session_id = ?').get(req.params.sessionId);
 
         if (!order) {
-            // Retrieve from Stripe and create order if paid
             const session = await stripe.checkout.sessions.retrieve(req.params.sessionId);
             if (session.payment_status === 'paid') {
                 order = await createOrderFromSession(session);
@@ -267,6 +257,7 @@ app.get('/api/order/:sessionId', async (req, res) => {
 
 // ---- API: Newsletter Signup ----
 app.post('/api/subscribe', (req, res) => {
+    const db = getDb();
     const { email } = req.body;
     if (!email || !email.includes('@')) {
         return res.status(400).json({ error: 'Invalid email' });
@@ -302,6 +293,7 @@ app.get('/admin', adminAuth, (req, res) => {
 
 // ---- ADMIN: Get Orders ----
 app.get('/api/admin/orders', adminAuth, (req, res) => {
+    const db = getDb();
     const { status, page = 1, limit = 20 } = req.query;
     const offset = (page - 1) * limit;
 
@@ -317,7 +309,8 @@ app.get('/api/admin/orders', adminAuth, (req, res) => {
     params.push(parseInt(limit), parseInt(offset));
 
     const orders = db.prepare(query).all(...params);
-    const total = db.prepare('SELECT COUNT(*) as count FROM orders').get().count;
+    const totalResult = db.prepare('SELECT COUNT(*) as count FROM orders').get();
+    const total = totalResult ? totalResult.count : 0;
 
     orders.forEach(o => { o.items = JSON.parse(o.items); });
 
@@ -326,6 +319,7 @@ app.get('/api/admin/orders', adminAuth, (req, res) => {
 
 // ---- ADMIN: Update Order Status ----
 app.patch('/api/admin/orders/:id', adminAuth, async (req, res) => {
+    const db = getDb();
     const { status, tracking_number, notes } = req.body;
     const order = db.prepare('SELECT * FROM orders WHERE id = ?').get(req.params.id);
     if (!order) return res.status(404).json({ error: 'Order not found' });
@@ -341,7 +335,6 @@ app.patch('/api/admin/orders/:id', adminAuth, async (req, res) => {
     params.push(req.params.id);
     db.prepare(`UPDATE orders SET ${updates.join(', ')} WHERE id = ?`).run(...params);
 
-    // Send shipping notification if status changed to shipped
     if (status === 'shipped') {
         const updated = db.prepare('SELECT * FROM orders WHERE id = ?').get(req.params.id);
         await sendShippingNotification(updated);
@@ -352,12 +345,13 @@ app.patch('/api/admin/orders/:id', adminAuth, async (req, res) => {
 
 // ---- ADMIN: Stats ----
 app.get('/api/admin/stats', adminAuth, (req, res) => {
+    const db = getDb();
     const stats = {
-        total_orders: db.prepare('SELECT COUNT(*) as c FROM orders').get().c,
-        total_revenue: db.prepare('SELECT COALESCE(SUM(total), 0) as t FROM orders').get().t,
-        pending_orders: db.prepare("SELECT COUNT(*) as c FROM orders WHERE status = 'paid'").get().c,
-        shipped_orders: db.prepare("SELECT COUNT(*) as c FROM orders WHERE status = 'shipped'").get().c,
-        subscribers: db.prepare('SELECT COUNT(*) as c FROM subscribers').get().c,
+        total_orders: (db.prepare('SELECT COUNT(*) as c FROM orders').get() || {}).c || 0,
+        total_revenue: (db.prepare('SELECT COALESCE(SUM(total), 0) as t FROM orders').get() || {}).t || 0,
+        pending_orders: (db.prepare("SELECT COUNT(*) as c FROM orders WHERE status = 'paid'").get() || {}).c || 0,
+        shipped_orders: (db.prepare("SELECT COUNT(*) as c FROM orders WHERE status = 'shipped'").get() || {}).c || 0,
+        subscribers: (db.prepare('SELECT COUNT(*) as c FROM subscribers').get() || {}).c || 0,
         recent_orders: db.prepare('SELECT * FROM orders ORDER BY created_at DESC LIMIT 5').all()
     };
     stats.recent_orders.forEach(o => { o.items = JSON.parse(o.items); });
@@ -370,13 +364,21 @@ app.get('/{*path}', (req, res) => {
 });
 
 // ---- Start Server ----
-app.listen(PORT, () => {
-    console.log(`
+async function start() {
+    await initDatabase();
+    app.listen(PORT, () => {
+        console.log(`
     ╔══════════════════════════════════════════╗
     ║       BrightHaus Server Running          ║
     ╠══════════════════════════════════════════╣
     ║  Store:  http://localhost:${PORT}            ║
     ║  Admin:  http://localhost:${PORT}/admin      ║
     ╚══════════════════════════════════════════╝
-    `);
+        `);
+    });
+}
+
+start().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
 });
