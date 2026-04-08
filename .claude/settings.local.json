@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://www.google.com/search?q=lighting+lamps+dropshipping+niche+2025+2026+market+analysis+evergreen\" -H \"User-Agent: Mozilla/5.0\")",
+      "WebSearch",
+      "WebFetch(domain:scaleorder.com)",
+      "WebFetch(domain:gempages.net)",
+      "WebFetch(domain:www.daylily.chat)"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+server/brighthaus.db
+server/.env
+server/server.log
+*.db-wal
+*.db-shm

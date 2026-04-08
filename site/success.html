@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed — BrightHaus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #FAF7F2;
+            color: #2C2C2C;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+        .success-card {
+            background: white;
+            border: 1px solid #E5E0D8;
+            border-radius: 12px;
+            padding: 48px 40px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .check-icon {
+            width: 72px;
+            height: 72px;
+            background: #E8F5E9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+        }
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        .subtitle { color: #6B6B6B; margin-bottom: 32px; line-height: 1.6; }
+        .order-info {
+            background: #FAF7F2;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .order-info .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .order-info .row .label { color: #6B6B6B; }
+        .order-info .row .value { font-weight: 600; }
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #B8956A;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .btn:hover { background: #9A7B55; }
+        .note { color: #9A9A9A; font-size: 13px; margin-top: 20px; line-height: 1.6; }
+        #loading { color: #9A9A9A; }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <div class="check-icon">✓</div>
+        <h1>Order Confirmed!</h1>
+        <p class="subtitle">Thank you for your purchase. We're preparing your order right now.</p>
+
+        <div class="order-info" id="orderInfo">
+            <p id="loading">Loading order details...</p>
+        </div>
+
+        <a href="/" class="btn">Continue Shopping</a>
+        <p class="note">A confirmation email has been sent to your inbox.<br>Questions? Email us at hello@brighthaus.com</p>
+    </div>
+
+    <script>
+        // Clear cart
+        localStorage.removeItem('brighthaus_cart');
+
+        const params = new URLSearchParams(window.location.search);
+        const sessionId = params.get('session_id');
+
+        if (sessionId) {
+            fetch(`/api/order/${sessionId}`)
+                .then(r => r.json())
+                .then(data => {
+                    const info = document.getElementById('orderInfo');
+                    if (data.order_number) {
+                        info.innerHTML = `
+                            <div class="row"><span class="label">Order Number</span><span class="value">${data.order_number}</span></div>
+                            <div class="row"><span class="label">Status</span><span class="value">${data.status}</span></div>
+                            <div class="row"><span class="label">Email</span><span class="value">${data.email}</span></div>
+                            <div class="row"><span class="label">Total</span><span class="value">$${data.total.toFixed(2)}</span></div>
+                            <div class="row"><span class="label">Shipping</span><span class="value">${data.shipping_method === 'express' ? '2-3 days' : '5-7 days'}</span></div>
+                        `;
+                    } else {
+                        info.innerHTML = `<div class="row"><span class="label">Status</span><span class="value">Payment received — processing</span></div>
+                        <div class="row"><span class="label">Email</span><span class="value">${data.email || ''}</span></div>`;
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('orderInfo').innerHTML = '<p>Your payment was successful. Check your email for details.</p>';
+                });
+        } else {
+            document.getElementById('orderInfo').innerHTML = '<p>Your payment was successful.</p>';
+        }
+    </script>
+</body>
+</html>

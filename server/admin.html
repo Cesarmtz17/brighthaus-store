@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightHaus — Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #F5F5F5; color: #2C2C2C; }
+
+        .topbar { background: #1A1A1A; color: #F0EBE3; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .topbar h1 { font-size: 20px; font-weight: 600; }
+        .topbar a { color: #B8956A; text-decoration: none; font-size: 14px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 24px 32px; }
+        .stat-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .stat-label { font-size: 12px; color: #6B6B6B; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-value.revenue { color: #5A8F6A; }
+
+        .section { padding: 0 32px 24px; }
+        .section h2 { font-size: 18px; margin-bottom: 16px; }
+
+        .filters { display: flex; gap: 8px; margin-bottom: 16px; }
+        .filters button { padding: 8px 20px; border: 1px solid #DDD; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; }
+        .filters button.active { background: #1A1A1A; color: white; border-color: #1A1A1A; }
+
+        table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-collapse: collapse; }
+        th { background: #FAFAFA; text-align: left; padding: 12px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #6B6B6B; border-bottom: 1px solid #EEE; }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #F5F5F5; }
+        tr:hover { background: #FAFAFA; }
+
+        .badge { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .badge-paid { background: #FFF3CD; color: #856404; }
+        .badge-processing { background: #D1ECF1; color: #0C5460; }
+        .badge-shipped { background: #D4EDDA; color: #155724; }
+        .badge-delivered { background: #D1E7DD; color: #0A3622; }
+        .badge-cancelled { background: #F8D7DA; color: #721C24; }
+
+        .order-actions { display: flex; gap: 8px; }
+        .btn-sm { padding: 6px 12px; border-radius: 4px; font-size: 12px; border: 1px solid #DDD; background: white; cursor: pointer; }
+        .btn-sm:hover { background: #F5F5F5; }
+        .btn-sm.primary { background: #B8956A; color: white; border-color: #B8956A; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 12px; padding: 32px; width: 500px; max-width: 90vw; max-height: 80vh; overflow-y: auto; }
+        .modal h3 { margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #6B6B6B; }
+        .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #DDD; border-radius: 6px; font-size: 14px; }
+        .form-group textarea { height: 80px; resize: vertical; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+        .order-items { font-size: 13px; color: #6B6B6B; }
+        .order-items div { margin-bottom: 2px; }
+
+        .empty { text-align: center; padding: 60px; color: #9A9A9A; }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .section, .stats-grid { padding-left: 16px; padding-right: 16px; }
+            table { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>BrightHaus Admin</h1>
+        <a href="/">← Back to Store</a>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value" id="statOrders">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value revenue" id="statRevenue">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="statPending">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Shipped</div>
+            <div class="stat-value" id="statShipped">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Subscribers</div>
+            <div class="stat-value" id="statSubs">—</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Orders</h2>
+        <div class="filters">
+            <button class="active" data-status="">All</button>
+            <button data-status="paid">Paid</button>
+            <button data-status="processing">Processing</button>
+            <button data-status="shipped">Shipped</button>
+            <button data-status="delivered">Delivered</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody">
+                <tr><td colspan="7" class="empty">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <h3>Update Order <span id="modalOrderNum"></span></h3>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="modalStatus">
+                    <option value="paid">Paid</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tracking Number</label>
+                <input type="text" id="modalTracking" placeholder="e.g. 1Z999AA10123456784">
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="modalNotes" placeholder="Internal notes..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-sm" onclick="closeModal()">Cancel</button>
+                <button class="btn-sm primary" onclick="saveOrder()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOrderId = null;
+        const creds = btoa(`${prompt('Admin username:')}:${prompt('Admin password:')}`);
+        const headers = { 'Authorization': `Basic ${creds}`, 'Content-Type': 'application/json' };
+
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/admin/stats', { headers });
+                if (!res.ok) { alert('Invalid credentials'); return; }
+                const data = await res.json();
+                document.getElementById('statOrders').textContent = data.total_orders;
+                document.getElementById('statRevenue').textContent = '$' + data.total_revenue.toFixed(2);
+                document.getElementById('statPending').textContent = data.pending_orders;
+                document.getElementById('statShipped').textContent = data.shipped_orders;
+                document.getElementById('statSubs').textContent = data.subscribers;
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadOrders(status = '') {
+            try {
+                const url = '/api/admin/orders' + (status ? `?status=${status}` : '');
+                const res = await fetch(url, { headers });
+                const data = await res.json();
+                const body = document.getElementById('ordersBody');
+
+                if (data.orders.length === 0) {
+                    body.innerHTML = '<tr><td colspan="7" class="empty">No orders found</td></tr>';
+                    return;
+                }
+
+                body.innerHTML = data.orders.map(o => `
+                    <tr>
+                        <td><strong>${o.order_number}</strong></td>
+                        <td>${new Date(o.created_at).toLocaleDateString()}</td>
+                        <td>${o.customer_name}<br><span style="font-size:12px;color:#999">${o.customer_email}</span></td>
+                        <td class="order-items">${o.items.map(i => `<div>${i.qty}x ${i.name}</div>`).join('')}</td>
+                        <td><strong>$${o.total.toFixed(2)}</strong></td>
+                        <td><span class="badge badge-${o.status}">${o.status}</span></td>
+                        <td>
+                            <button class="btn-sm" onclick="openModal(${o.id}, '${o.order_number}', '${o.status}', '${o.tracking_number || ''}', '${(o.notes || '').replace(/'/g, "\\'")}')">Edit</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error(e); }
+        }
+
+        function openModal(id, num, status, tracking, notes) {
+            currentOrderId = id;
+            document.getElementById('modalOrderNum').textContent = '#' + num;
+            document.getElementById('modalStatus').value = status;
+            document.getElementById('modalTracking').value = tracking;
+            document.getElementById('modalNotes').value = notes;
+            document.getElementById('orderModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            currentOrderId = null;
+        }
+
+        async function saveOrder() {
+            if (!currentOrderId) return;
+            const body = {
+                status: document.getElementById('modalStatus').value,
+                tracking_number: document.getElementById('modalTracking').value,
+                notes: document.getElementById('modalNotes').value
+            };
+            await fetch(`/api/admin/orders/${currentOrderId}`, {
+                method: 'PATCH', headers, body: JSON.stringify(body)
+            });
+            closeModal();
+            loadOrders();
+            loadStats();
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filters button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadOrders(btn.dataset.status);
+            });
+        });
+
+        loadStats();
+        loadOrders();
+    </script>
+</body>
+</html>

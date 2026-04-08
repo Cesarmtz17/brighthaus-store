@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightHaus — Premium LED Lighting Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <p>🚚 FREE shipping on orders over $49 | ⚡ 30-Day Money Back Guarantee</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">💡</span>
+                <span class="logo-text">Bright<span class="logo-accent">Haus</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#products">Shop</a></li>
+                <li><a href="#collections">Collections</a></li>
+                <li><a href="#why-us">Why BrightHaus</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="cart-btn" id="cartBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">Premium LED Lighting</span>
+                <h1>Light Every Corner<br>of Your Home</h1>
+                <p class="hero-subtitle">Professional-grade LED lighting solutions for your closet, garage, kitchen & outdoor spaces. Easy install. No electrician needed.</p>
+                <div class="hero-cta">
+                    <a href="#products" class="btn btn-primary btn-lg">Shop Best Sellers</a>
+                    <a href="#why-us" class="btn btn-outline btn-lg">Why BrightHaus?</a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <span class="trust-icon">⭐</span>
+                        <span>4.8/5 Rating</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">📦</span>
+                        <span>Fast US Shipping</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">🔄</span>
+                        <span>30-Day Returns</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-glow"></div>
+                <div class="hero-product-showcase">
+                    <div class="showcase-card">
+                        <div class="showcase-icon">💡</div>
+                        <span>Motion Sensor</span>
+                    </div>
+                    <div class="showcase-card">
+                        <div class="showcase-icon">🔆</div>
+                        <span>Garage LED</span>
+                    </div>
+                    <div class="showcase-card">
+                        <div class="showcase-icon">✨</div>
+                        <span>Under Cabinet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections -->
+    <section class="collections" id="collections">
+        <div class="container">
+            <h2 class="section-title">Shop by Space</h2>
+            <p class="section-subtitle">Find the perfect lighting for every room</p>
+            <div class="collections-grid">
+                <a href="#products" class="collection-card" data-filter="indoor">
+                    <div class="collection-icon">🏠</div>
+                    <h3>Indoor Essentials</h3>
+                    <p>Closets, stairs, hallways & bedrooms</p>
+                </a>
+                <a href="#products" class="collection-card" data-filter="garage">
+                    <div class="collection-icon">🔧</div>
+                    <h3>Garage & Workshop</h3>
+                    <p>High-lumen deformable LED panels</p>
+                </a>
+                <a href="#products" class="collection-card" data-filter="kitchen">
+                    <div class="collection-icon">🍳</div>
+                    <h3>Kitchen & Cabinet</h3>
+                    <p>Under-cabinet task lighting</p>
+                </a>
+                <a href="#products" class="collection-card" data-filter="outdoor">
+                    <div class="collection-icon">🌙</div>
+                    <h3>Outdoor & Security</h3>
+                    <p>Motion sensor & weatherproof lights</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Best Sellers</h2>
+            <p class="section-subtitle">Our most popular lighting solutions — loved by thousands of homeowners</p>
+
+            <div class="product-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="indoor">Indoor</button>
+                <button class="filter-btn" data-filter="garage">Garage</button>
+                <button class="filter-btn" data-filter="kitchen">Kitchen</button>
+                <button class="filter-btn" data-filter="outdoor">Outdoor</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Product 1: Motion Sensor Light 3-Pack -->
+                <div class="product-card" data-category="indoor">
+                    <div class="product-badge badge-bestseller">Best Seller</div>
+                    <div class="product-image">
+                        <img src="img/motion-sensor.jpg" alt="LED Motion Sensor Light 3-Pack" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(2,847)</span>
+                        </div>
+                        <h3 class="product-title">LED Motion Sensor Light — 3 Pack</h3>
+                        <p class="product-desc">Rechargeable USB-C, magnetic mount. Perfect for closets, stairs & hallways. Auto on/off.</p>
+                        <ul class="product-features">
+                            <li>120° PIR sensor, 10ft range</li>
+                            <li>USB-C rechargeable, 4-6 week battery</li>
+                            <li>Magnetic + adhesive mount</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$24.99</span>
+                            <span class="price-original">$39.99</span>
+                            <span class="price-save">Save 37%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="motion-sensor-3" data-price="24.99" data-name="LED Motion Sensor Light — 3 Pack">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2: Motion Sensor Light 6-Pack -->
+                <div class="product-card" data-category="indoor">
+                    <div class="product-badge badge-value">Best Value</div>
+                    <div class="product-image">
+                        <img src="img/motion-sensor.jpg" alt="LED Motion Sensor Light 6-Pack" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(1,523)</span>
+                        </div>
+                        <h3 class="product-title">LED Motion Sensor Light — 6 Pack</h3>
+                        <p class="product-desc">Light up your entire home. Closets, pantry, stairs, garage entry — every dark corner covered.</p>
+                        <ul class="product-features">
+                            <li>All features of 3-pack</li>
+                            <li>Covers 6 areas of your home</li>
+                            <li>Save $12 vs buying 2x 3-packs</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$39.99</span>
+                            <span class="price-original">$69.99</span>
+                            <span class="price-save">Save 43%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="motion-sensor-6" data-price="39.99" data-name="LED Motion Sensor Light — 6 Pack">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3: Deformable Garage Light -->
+                <div class="product-card" data-category="garage">
+                    <div class="product-badge badge-bestseller">Best Seller</div>
+                    <div class="product-image">
+                        <img src="img/garage-light.jpg" alt="Deformable LED Garage Light 80W" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(3,214)</span>
+                        </div>
+                        <h3 class="product-title">Deformable LED Garage Light — 80W</h3>
+                        <p class="product-desc">8,000 lumens of daylight brightness. Screws into any standard E26 socket. No wiring needed.</p>
+                        <ul class="product-features">
+                            <li>3 adjustable panels (0-90°)</li>
+                            <li>8,000 lumens, 6500K daylight</li>
+                            <li>Standard E26 socket — instant install</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$19.99</span>
+                            <span class="price-original">$34.99</span>
+                            <span class="price-save">Save 43%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="garage-80w" data-price="19.99" data-name="Deformable LED Garage Light — 80W">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4: Deformable Garage Light 2-Pack -->
+                <div class="product-card" data-category="garage">
+                    <div class="product-badge badge-value">Best Value</div>
+                    <div class="product-image">
+                        <img src="img/garage-light.jpg" alt="Deformable LED Garage Light 2-Pack 150W" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(1,892)</span>
+                        </div>
+                        <h3 class="product-title">Deformable LED Garage Light — 2 Pack 150W</h3>
+                        <p class="product-desc">Ultra-bright 15,000 lumens each. Cover your entire garage or workshop with stadium-like lighting.</p>
+                        <ul class="product-features">
+                            <li>5 adjustable panels per light</li>
+                            <li>15,000 lumens each, 6500K</li>
+                            <li>Save $8 vs buying separately</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$34.99</span>
+                            <span class="price-original">$54.99</span>
+                            <span class="price-save">Save 36%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="garage-150w-2pack" data-price="34.99" data-name="Deformable LED Garage Light — 2 Pack 150W">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 5: Under Cabinet Light -->
+                <div class="product-card" data-category="kitchen">
+                    <div class="product-badge badge-new">New</div>
+                    <div class="product-image">
+                        <img src="img/cabinet-light.jpg" alt="LED Under Cabinet Light 2-Pack" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(1,105)</span>
+                        </div>
+                        <h3 class="product-title">LED Under Cabinet Light — 2 Pack</h3>
+                        <p class="product-desc">Wireless, rechargeable kitchen task lighting. Motion sensor activates hands-free while you cook.</p>
+                        <ul class="product-features">
+                            <li>Motion sensor + manual mode</li>
+                            <li>5 brightness levels, dimmable</li>
+                            <li>USB-C rechargeable, magnetic mount</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$22.99</span>
+                            <span class="price-original">$37.99</span>
+                            <span class="price-save">Save 39%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="cabinet-2pack" data-price="22.99" data-name="LED Under Cabinet Light — 2 Pack">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 6: Outdoor Security Light -->
+                <div class="product-card" data-category="outdoor">
+                    <div class="product-badge badge-new">New</div>
+                    <div class="product-image">
+                        <img src="img/outdoor-light.jpg" alt="Outdoor Motion Sensor Flood Light 2-Pack" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-count">(987)</span>
+                        </div>
+                        <h3 class="product-title">Outdoor Motion Sensor Flood Light — 2 Pack</h3>
+                        <p class="product-desc">3-head security light with 180° motion detection. IP65 weatherproof for any outdoor environment.</p>
+                        <ul class="product-features">
+                            <li>3 adjustable heads, 6200 lumens</li>
+                            <li>180° sensor, 49ft range</li>
+                            <li>IP65 waterproof, anti-rust aluminum</li>
+                        </ul>
+                        <div class="product-pricing">
+                            <span class="price-current">$39.99</span>
+                            <span class="price-original">$59.99</span>
+                            <span class="price-save">Save 33%</span>
+                        </div>
+                        <button class="btn btn-primary btn-add-cart" data-product="outdoor-flood-2pack" data-price="39.99" data-name="Outdoor Motion Sensor Flood Light — 2 Pack">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section class="why-us" id="why-us">
+        <div class="container">
+            <h2 class="section-title">Why Choose BrightHaus?</h2>
+            <p class="section-subtitle">We're not just another lighting store</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🇺🇸</div>
+                    <h3>US Warehouse Shipping</h3>
+                    <p>Most orders ship from our US warehouse. Delivered to your door in 3-7 business days.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>30-Day Money Back</h3>
+                    <p>Not satisfied? Return any product within 30 days for a full refund. No questions asked.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>1-Year Warranty</h3>
+                    <p>Every product comes with a 1-year manufacturer warranty. We stand behind our lights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📞</div>
+                    <h3>US-Based Support</h3>
+                    <p>Real humans answering your questions. Email us anytime — we respond within 24 hours.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Easy Install</h3>
+                    <p>No electrician needed. All our products are designed for simple DIY installation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>Energy Efficient</h3>
+                    <p>LED technology saves up to 85% on energy costs vs traditional bulbs. Good for your wallet and the planet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof / Reviews -->
+    <section class="reviews" id="reviews">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-subtitle">Join 10,000+ happy homeowners</p>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Finally, my closet isn't a black hole! These motion sensor lights are genius — they turn on the second I open the door. Bought the 6-pack and put them everywhere."</p>
+                    <div class="review-author">
+                        <strong>Sarah M.</strong>
+                        <span>Verified Buyer — Motion Sensor 6-Pack</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"I can actually see in my garage now! Installed in literally 10 seconds — just screwed it into the existing socket. It's like daylight in there. Ordering another one."</p>
+                    <div class="review-author">
+                        <strong>Mike R.</strong>
+                        <span>Verified Buyer — Garage LED 80W</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The under-cabinet lights transformed my kitchen. The motion sensor is so convenient when my hands are full. USB rechargeable is a game changer — no more batteries."</p>
+                    <div class="review-author">
+                        <strong>Jennifer L.</strong>
+                        <span>Verified Buyer — Under Cabinet 2-Pack</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"Great security lights. The motion sensor picks up movement from far away and the brightness is impressive. Survived a full winter of rain and snow."</p>
+                    <div class="review-author">
+                        <strong>David K.</strong>
+                        <span>Verified Buyer — Outdoor Flood Light</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bundle Section -->
+    <section class="bundles">
+        <div class="container">
+            <h2 class="section-title">Bundle & Save</h2>
+            <p class="section-subtitle">Light up your entire home for less</p>
+            <div class="bundles-grid">
+                <div class="bundle-card">
+                    <div class="bundle-badge">Save $25</div>
+                    <h3>Whole Home Starter Kit</h3>
+                    <p>Motion Sensor 6-Pack + Under Cabinet 2-Pack + Garage LED</p>
+                    <div class="bundle-pricing">
+                        <span class="price-current">$69.99</span>
+                        <span class="price-original">$94.97</span>
+                    </div>
+                    <button class="btn btn-primary btn-add-cart" data-product="bundle-starter" data-price="69.99" data-name="Whole Home Starter Kit">Add Bundle to Cart</button>
+                </div>
+                <div class="bundle-card bundle-featured">
+                    <div class="bundle-badge">Most Popular</div>
+                    <h3>Complete Home Package</h3>
+                    <p>Motion Sensor 6-Pack + Under Cabinet 2-Pack + Garage LED 2-Pack + Outdoor Flood 2-Pack</p>
+                    <div class="bundle-pricing">
+                        <span class="price-current">$119.99</span>
+                        <span class="price-original">$149.96</span>
+                    </div>
+                    <button class="btn btn-primary btn-add-cart" data-product="bundle-complete" data-price="119.99" data-name="Complete Home Package">Add Bundle to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How long does shipping take?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most orders ship from our US warehouse and arrive within 3-7 business days. You'll receive a tracking number via email once your order ships.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Do I need an electrician to install these?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No! All our products are designed for easy DIY installation. Motion sensor lights use magnetic/adhesive mounts. Garage lights screw into a standard E26 socket. No wiring required.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How long do the rechargeable batteries last?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our motion sensor lights last 4-6 weeks on a single charge with average use (10-15 activations per day). Recharging takes about 2 hours via USB-C.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What is your return policy?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We offer a 30-day money-back guarantee on all products. If you're not satisfied, contact us for a full refund — no questions asked. We also provide a 1-year warranty against defects.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Are the outdoor lights really waterproof?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Our outdoor lights are rated IP65, which means they're protected against rain, snow, and dust. The aluminum housing is also anti-rust coated for long-term outdoor use.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Do you offer wholesale or bulk pricing?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! For orders of 10+ units, contact us at hello@brighthaus.com for custom wholesale pricing. We work with contractors, property managers, and businesses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Get 10% Off Your First Order</h2>
+                <p>Join our newsletter for exclusive deals, lighting tips, and new product launches.</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Get 10% Off</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">💡</span>
+                        <span class="logo-text">Bright<span class="logo-accent">Haus</span></span>
+                    </a>
+                    <p>Premium LED lighting solutions for every space in your home. Easy install, energy efficient, built to last.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#products">All Products</a></li>
+                        <li><a href="#products">Indoor Lighting</a></li>
+                        <li><a href="#products">Garage Lighting</a></li>
+                        <li><a href="#products">Outdoor Lighting</a></li>
+                        <li><a href="#products">Bundles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BrightHaus. All rights reserved.</p>
+                <div class="payment-icons">
+                    <span>💳 Visa</span>
+                    <span>💳 Mastercard</span>
+                    <span>💳 Amex</span>
+                    <span>💳 PayPal</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" id="cartClose">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="cart-empty">Your cart is empty</p>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn btn-primary btn-block" id="checkoutBtn" onclick="handleCheckout()">Checkout</button>
+            <p class="cart-note">Free shipping on orders over $49</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
